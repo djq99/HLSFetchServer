@@ -14,8 +14,8 @@ var DEFAULT_TIMEOUT = 180000;
 function getCWDName (parentUri, localUri) {
     // Do I need to use node's URL object?
 
-    localUri = localUri.replace(/[%~.=?]/g,'');
-    parentUri = parentUri.replace(/[%~.=?]/g,'');
+    localUri = localUri.replace(/[%~.=?:]/g,'');
+    parentUri = parentUri.replace(/[%~.=?:]/g,'');
 
     var parentPaths = path.dirname(parentUri).split('/');
     var localPaths = path.dirname(localUri).split('/');
@@ -42,7 +42,9 @@ function createManifestText (manifest, rootUri) {
     return manifest.map(function (line) {
         if (line.type === 'playlist') {
             var subCWD = getCWDName(rootUri, line.line);
-            return subCWD + '/' + path.basename(line.line);
+            console.log(subCWD)
+            console.log("************** "+subCWD + '/' + path.basename(line.line));
+            return './'+subCWD + '/' + path.basename(line.line);
         } else if (line.type === 'segment') {
             return path.basename(line.line);
         }
@@ -78,8 +80,6 @@ function getIt (options, done) {
         if (fs.existsSync(path.resolve(cwd, playlistFilename))) {
             return done(null,playlistFilename);
         }
-        // console.log("*********"+cwd);
-        // console.log(playlistFilename);
         fs.writeFileSync(path.resolve(cwd, playlistFilename), createManifestText(manifest, uri));
 
         var segments = manifest.filter(function (resource) {
