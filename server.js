@@ -20,10 +20,6 @@ app.use(function(req, res, next) {
 
 app.use(express.static('downloads'))
 
-app.get('/',(req,res) =>{
-    res.send('Hello World');
-})
-
 app.get('/stream',(req,res)=>{
     const remoteHLS = req.query.hlsurl;
     const output = './downloads'
