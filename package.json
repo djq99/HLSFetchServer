@@ -10,7 +10,6 @@
   "author": "Jiaqi",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2",
-    "hls-fetcher": "^1.1.1"
+    "express": "^4.16.2"
   }
 }
