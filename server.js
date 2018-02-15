@@ -35,11 +35,10 @@ app.get('/stream',(req,res)=>{
         };
         hlsFetcher.getIt(options,(err,fileName)=>{
             if(err){
-                console.log('here');
                 return res.status(400).send(err);
             }
             else{
-                var fullUrl = `${req.protocol}://${req.get('host')}/${fileName}`;
+                var fullUrl = `${req.protocol}s://${req.get('host')}/${fileName}`;
                 res.send(fullUrl);
             }
         })
