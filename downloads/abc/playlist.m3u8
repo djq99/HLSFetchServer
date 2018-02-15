@@ -4,11 +4,11 @@
 #EXT-X-TARGETDURATION:6
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXTINF:6.000000
-segment-1.ts
+https://lit-caverns-42261.herokuapp.com/abc/segment-1.ts
 #EXTINF:6.000000
-segment-2.ts
+https://lit-caverns-42261.herokuapp.com/abc/segment-2.ts
 #EXTINF:6.000000
-segment-3.ts
+https://lit-caverns-42261.herokuapp.com/abc/segment-3.ts
 #EXTINF:3.900000
-segment-4.ts
+https://lit-caverns-42261.herokuapp.com/abc/segment-4.ts
 #EXT-X-ENDLIST
