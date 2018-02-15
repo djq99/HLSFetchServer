@@ -13,8 +13,13 @@ var DEFAULT_TIMEOUT = 180000;
 
 function getCWDName (parentUri, localUri) {
     // Do I need to use node's URL object?
+
+    localUri = localUri.replace(/[%~.=?]/g,'');
+    parentUri = parentUri.replace(/[%~.=?]/g,'');
+
     var parentPaths = path.dirname(parentUri).split('/');
     var localPaths = path.dirname(localUri).split('/');
+
 
     var lookFor = parentPaths.pop();
     var i = localPaths.length;
@@ -51,8 +56,6 @@ function getIt (options, done) {
     var concurrency = options.concurrency || DEFAULT_CONCURRENCY;
     var playlistFilename = path.basename(uri);
 
-
-
     // Fetch playlist
     fetch.fetchUrl(uri, {timeout: DEFAULT_TIMEOUT}, function getPlaylist (err, meta, body) {
         if (err) {
@@ -75,7 +78,8 @@ function getIt (options, done) {
         if (fs.existsSync(path.resolve(cwd, playlistFilename))) {
             return done(null,playlistFilename);
         }
-
+        // console.log("*********"+cwd);
+        // console.log(playlistFilename);
         fs.writeFileSync(path.resolve(cwd, playlistFilename), createManifestText(manifest, uri));
 
         var segments = manifest.filter(function (resource) {
@@ -128,6 +132,7 @@ function streamToDisk (resource, filename, cwd, done) {
     // Fetch it to CWD (streaming)
     var segmentStream = new fetch.FetchStream(resource.line);
     //handle duplicate filenames & remove query parameters
+
     if (filename.match(/\?/)) {
         filename = filename.match(/^.+\..+\?/)[0];
         filename = filename.substring(0, filename.length - 1);
