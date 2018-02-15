@@ -5,6 +5,9 @@ const mkdirp = require('mkdirp');
 const app = express();
 const port = process.env.PORT || 3000;
 
+
+app.use(express.static('downloads'))
+
 app.get('/',(req,res) =>{
     res.send('Hello World');
 })
@@ -32,10 +35,7 @@ app.get('/stream',(req,res)=>{
         })
     })
 
-    // hlsFetcher(options).then(function(){
-    //     var timeTaken = ((Date.now() - startTime) / 1000).toFixed(2);
-    //     console.log('Operation completed successfully in', timeTaken, 'seconds.');
-    // })
+
 })
 
 
