@@ -79,7 +79,9 @@ function parseManifest (manifestUri, manifestData) {
   // determine resources, and store all lines
   for(var i = 0; i < lines.length; i++) {
     var currentLine = lines[i];
-      manifestLines.push({type: 'tag', line: currentLine});
+    if(!currentLine.match(/^#EXT-X-BYTERANGE/)){
+        manifestLines.push({type: 'tag', line: currentLine});
+    }
     if (currentLine.match(/^#EXT-X-KEY/i)) {
         encryptionSettings = parseEncryption(currentLine, manifestUri);
     } else if(currentLine.match(/^#EXT-X-MEDIA-SEQUENCE/i)) {
