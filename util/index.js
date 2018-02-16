@@ -42,8 +42,6 @@ function createManifestText (manifest, rootUri) {
     return manifest.map(function (line) {
         if (line.type === 'playlist') {
             var subCWD = getCWDName(rootUri, line.line);
-            console.log(subCWD)
-            console.log("************** "+subCWD + '/' + path.basename(line.line));
             return './'+subCWD + '/' + path.basename(line.line);
         } else if (line.type === 'segment') {
             return path.basename(line.line);
@@ -67,6 +65,7 @@ function getIt (options, done) {
 
         // Parse playlist
         var manifest = parse.parseManifest(uri, body.toString());
+        // console.log(manifest);
 
         // Save manifest
         if (playlistFilename.match(/\?/)) {
@@ -80,6 +79,7 @@ function getIt (options, done) {
         if (fs.existsSync(path.resolve(cwd, playlistFilename))) {
             return done(null,playlistFilename);
         }
+
         fs.writeFileSync(path.resolve(cwd, playlistFilename), createManifestText(manifest, uri));
 
         var segments = manifest.filter(function (resource) {

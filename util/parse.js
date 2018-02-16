@@ -34,7 +34,7 @@ function parseResource (tagLine, resourceLine, manifestUri, mediaSequence, encry
     IV: 0
   };
 
-  if(tagLine.match(/^#EXTINF/i)) {
+  if(tagLine.match(/^#EXTINF/i) || tagLine.match(/^#EXT-X-BYTERANGE/i)) {
     resource.type = 'segment';
   } else if (tagLine.match(/^#EXT-X-STREAM-INF/i)) {
     resource.type = 'playlist';
@@ -79,19 +79,16 @@ function parseManifest (manifestUri, manifestData) {
   // determine resources, and store all lines
   for(var i = 0; i < lines.length; i++) {
     var currentLine = lines[i];
-    manifestLines.push({type: 'tag', line: currentLine});
+      manifestLines.push({type: 'tag', line: currentLine});
     if (currentLine.match(/^#EXT-X-KEY/i)) {
-      encryptionSettings = parseEncryption(currentLine, manifestUri);
+        encryptionSettings = parseEncryption(currentLine, manifestUri);
     } else if(currentLine.match(/^#EXT-X-MEDIA-SEQUENCE/i)) {
-      mediaSequence = parseFloat(currentLine.split(':')[1]);
-    } else if(currentLine.match(/^#EXTINF/) || currentLine.match(/^#EXT-X-STREAM-INF/)) {
-      i++;
-      if (i < lines.length) {
+        mediaSequence = parseFloat(currentLine.split(':')[1]);
+    } else if((currentLine.match(/^#EXTINF/) || currentLine.match(/^#EXT-X-STREAM-INF/) || currentLine.match(/^#EXT-X-BYTERANGE/)) && (i < lines.length && !lines[i+1].match(/^#EXT/))) {
+        i++;
         manifestLines.push(parseResource(currentLine, lines[i], rootUri, mediaSequence++, encryptionSettings));
-      }
     }
   }
-
   return manifestLines;
 }
 
