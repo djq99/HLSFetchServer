@@ -44,7 +44,7 @@ function createManifestText (manifest, rootUri) {
             var subCWD = getCWDName(rootUri, line.line);
             return './'+subCWD + '/' + path.basename(line.line);
         } else if (line.type === 'segment') {
-            return path.basename(line.line);
+            return './'+path.basename(line.line);
         }
         return line.line;
     }).join('\n');
